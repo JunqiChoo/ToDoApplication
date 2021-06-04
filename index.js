@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Task = require("./models/task");
 const methodOverride = require('method-override');
-
+//connecting to the mongoose db
 mongoose.connect('mongodb://localhost:27017/ToDoApp', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
     console.log("CONNECTION OPEN!")
@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'))
 
 app.get("/main",async (req,res)=>{
+    //find all the task and display it
     const ListOftask = await Task.find({});
     res.render("main",{ListOftask});
 })
@@ -34,7 +35,9 @@ app.post("/main",async(req,res)=>{
 })
 
 app.delete("/main/:id",async(req,res)=>{
+    //getting the id from the params
     const {id} = req.params;
+    //delete the task
     const DeleteTask = await Task.findByIdAndDelete(id);
     res.redirect("/main");
 
