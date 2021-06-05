@@ -43,6 +43,28 @@ app.delete("/main/:id",async(req,res)=>{
 
 })
 
+
+
+
+app.get("/main/edit/:id",async(req,res)=>{
+    const {id} = req.params;
+    //find the task here
+    const Selectedtask = await Task.findById(id);
+    res.render("edit",{Selectedtask})
+})
+
+
+app.post("/main/edit/:id",async(req,res)=>{
+    const {id} = req.params;
+    const {task} = req.body;
+    const Selectedtask = await Task.findByIdAndUpdate(id,{task:task})
+    res.redirect("/main");
+})
+
+
+
+
+
 app.listen(port,()=>{
     console.log(`Listening on port ${port}.............`);
 })

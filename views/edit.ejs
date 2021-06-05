@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDoApp</title>
+    <title></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -20,39 +20,26 @@
 </head>
 
 <body>
+
     <nav class="navbar sticky-top  navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1 ">TO DO APP</span>
     </nav>
+
     <div class="container mt-3 ">
         <div class="row">
+
             <div class="col-8 offset-2">
+                <h1>Edit Task</h1>
                 <form class="d-flex " method="POST">
-                    <input type="text" class="form-control" id="task" name="task" placeholder="Please Enter Task"
-                        required>
-                    <button type="submit" class="btn btn-primary ml-3">Submit</button>
+                    <input type="text" class="form-control" id="task" name="task" 
+                        required value="<%= Selectedtask.task %>" >
+                    <button type="submit" class="btn btn-success ml-3">Save Changes</button>
                 </form>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-8 offset-2">
-                <% if(ListOftask.length !=0) {%>
-                    <ul class="list-group">
-                        <% for(var item of ListOftask){ %>
-                            <form action="/main/<%= item._id %>?_method=DELETE" method="POST">
-                                <li class="list-group-item">
-                                    <%= item.task%>
-                                    <a href="/main/edit/<%= item._id %>" class="btn btn-warning btn-sm float-right">Edit</a>
-                                        <button class="btn btn-danger btn-sm float-right">Delete</button>
-                                </li>
-                                <% } %>
-                            </form>
-                    </ul>
-                    <% }else{ %>
-                        <small class="d-flex justify-content-center">No task Available.</small>
-                        <% } %>
-            </div>
-        </div>
+
     </div>
+
 </body>
 
 </html>
