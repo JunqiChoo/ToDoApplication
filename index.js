@@ -6,8 +6,9 @@ var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Task = require("./models/task");
 const methodOverride = require('method-override');
+
 //connecting to the mongoose db
-mongoose.connect('mongodb://localhost:27017/ToDoApp', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect('mongodb://localhost:27017/ToDoApp', {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
 .then(()=>{
     console.log("CONNECTION OPEN!")
 }).catch(err=>{
@@ -18,7 +19,8 @@ mongoose.connect('mongodb://localhost:27017/ToDoApp', {useNewUrlParser: true, us
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
+
 
 app.get("/main",async (req,res)=>{
     //find all the task and display it
@@ -40,11 +42,7 @@ app.delete("/main/:id",async(req,res)=>{
     //delete the task
     const DeleteTask = await Task.findByIdAndDelete(id);
     res.redirect("/main");
-
 })
-
-
-
 
 app.get("/main/edit/:id",async(req,res)=>{
     const {id} = req.params;
@@ -53,7 +51,6 @@ app.get("/main/edit/:id",async(req,res)=>{
     res.render("edit",{Selectedtask})
 })
 
-
 app.post("/main/edit/:id",async(req,res)=>{
     const {id} = req.params;
     const {task} = req.body;
@@ -61,9 +58,18 @@ app.post("/main/edit/:id",async(req,res)=>{
     res.redirect("/main");
 })
 
+//handle 404 errors
+app.use((req,res,next)=>{
+    res.status(404);
+    res.render("error", {errorType: 404,errorMsg:`Please Enter Correct URL Link to the application.`});
+})
 
-
-
+//handle 500 error
+app.use((err,req,res,next)=>{
+    console.log(err);
+    res.status(500);
+    res.render("error",{errorType: 500, errorMsg:err});
+})
 
 app.listen(port,()=>{
     console.log(`Listening on port ${port}.............`);
