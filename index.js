@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Task = require("./models/task");
 const methodOverride = require('method-override');
+const session = require("express-session");
+const flash = require("connect-flash");
 //for the flash messages
 
 
@@ -24,13 +26,31 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 //for the flash messages
 
+const sessionconfig = {
+    secret:"todoappsecret",
+    resave:false,
+    saveUninitialized :true,
+    cookie:{
+        expires:Date.now()+1000*60*60*24*7
+    }
+}
+
+
+app.use(session(sessionconfig))
+app.use(flash());
+
+
+
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+})
 
 
 app.get("/main",async (req,res)=>{
     //find all the task and display it
-
     const ListOftask = await Task.find({});
-   
     res.render("main",{ListOftask});
 })
 
@@ -38,6 +58,7 @@ app.post("/main",async(req,res)=>{
     const userinput = req.body.task;
     const task = new Task({task:userinput});
     await task.save();
+    req.flash("success","successfully added a new task");
     //add the user task into the database from here
     res.redirect("/main");
 })
@@ -47,6 +68,7 @@ app.delete("/main/:id",async(req,res)=>{
     const {id} = req.params;
     //delete the task
     const DeleteTask = await Task.findByIdAndDelete(id);
+    req.flash("success","successfully deleted the task");
     res.redirect("/main");
 })
 
