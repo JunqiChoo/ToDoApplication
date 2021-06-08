@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Task = require("./models/task");
 const methodOverride = require('method-override');
+//for the flash messages
+
 
 //connecting to the mongoose db
 mongoose.connect('mongodb://localhost:27017/ToDoApp', {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
@@ -20,11 +22,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
+//for the flash messages
+
 
 
 app.get("/main",async (req,res)=>{
     //find all the task and display it
+
     const ListOftask = await Task.find({});
+   
     res.render("main",{ListOftask});
 })
 

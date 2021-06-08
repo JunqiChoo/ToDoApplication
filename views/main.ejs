@@ -26,8 +26,7 @@
     <div class="container mt-3 ">
         <div class="row">
             <div class="col-8 offset-2">
-               
-
+              
                 <form class="d-flex " method="POST">
                     <input type="text" class="form-control" id="task" name="task" placeholder="Please Enter Task"
                         required>
@@ -44,10 +43,10 @@
                                 <li class="list-group-item">
                                     <%= item.task%>
                                     <a href="/main/edit/<%= item._id %>" class="btn btn-warning btn-sm float-right">Edit</a>
-                                        <button class="btn btn-danger btn-sm float-right">Delete</button>
+                                    <button class="btn btn-danger btn-sm float-right">Delete</button>
                                 </li>
-                                <% } %>
                             </form>
+                                <% } %>
                     </ul>
                     <% }else{ %>
                         <small class="d-flex justify-content-center">No task Available.</small>
