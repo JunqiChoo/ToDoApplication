@@ -34,12 +34,8 @@ const sessionconfig = {
         expires:Date.now()+1000*60*60*24*7
     }
 }
-
-
 app.use(session(sessionconfig))
 app.use(flash());
-
-
 
 app.use((req,res,next)=>{
     res.locals.success = req.flash("success");
@@ -83,6 +79,7 @@ app.post("/main/edit/:id",async(req,res)=>{
     const {id} = req.params;
     const {task} = req.body;
     const Selectedtask = await Task.findByIdAndUpdate(id,{task:task})
+    req.flash("success","successfully edited task");
     res.redirect("/main");
 })
 
