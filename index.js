@@ -2,9 +2,6 @@
 if(process.env.NODE_ENV !=="production"){
     require("dotenv").config();
 }
-
-
-
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -15,15 +12,14 @@ const Task = require("./models/task");
 const methodOverride = require('method-override');
 const session = require("express-session");
 const flash = require("connect-flash");
+const MongoStore = require('connect-mongo');
 //for the flash messages
 
 const DB_URL = process.env.DB_URL;
 
-
-
 //'mongodb://localhost:27017/ToDoApp'
 //connecting to the mongoose db
-mongoose.connect('mongodb://localhost:27017/ToDoApp',
+mongoose.connect(DB_URL,
  {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
 .then(()=>{
     console.log("CONNECTION OPEN!")
@@ -41,7 +37,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 //for the flash messages
 
+
+const store = new MongoStore({
+    mongoUrl:DB_URL,
+    secret:"thisisasecret",
+    touchAfter:24*3600
+});
+
+
+store.on("error",function(e){
+    console.log("session store error",e)
+})
+
 const sessionconfig = {
+    store,
+    name:"session",
     secret:"todoappsecret",
     resave:false,
     saveUninitialized :true,
