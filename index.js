@@ -4,7 +4,7 @@ if(process.env.NODE_ENV !=="production"){
 }
 const express = require("express");
 const app = express();
-const port = 3000;
+
 const path = require("path");
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -116,7 +116,7 @@ app.use((err,req,res,next)=>{
     res.status(500);
     res.render("error",{errorType: 500, errorMsg:err});
 })
-
+const port = process.env.PORT || 3000;
 app.listen(port,()=>{
     console.log(`Listening on port ${port}.............`);
 })
