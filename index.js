@@ -79,7 +79,7 @@ app.post("/main",async(req,res)=>{
     const userinput = req.body.task;
     const task = new Task({task:userinput});
     await task.save();
-    req.flash("success","successfully added a new task");
+    await req.flash("success","successfully added a new task");
     //add the user task into the database from here
     res.redirect("/main");
 })
