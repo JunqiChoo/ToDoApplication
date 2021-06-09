@@ -15,7 +15,7 @@ const flash = require("connect-flash");
 const MongoStore = require('connect-mongo');
 //for the flash messages
 
-const DB_URL = process.env.DB_URL;
+const DB_URL = process.env.DB_URL||'mongodb://localhost:27017/ToDoApp';
 
 //'mongodb://localhost:27017/ToDoApp'
 //connecting to the mongoose db
@@ -27,9 +27,6 @@ mongoose.connect(DB_URL,
     console.log("CONNECTION ISSUE")
     console.log(err);
 });
-
-
-
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -68,7 +65,6 @@ app.use((req,res,next)=>{
     next();
 })
 
-
 app.get("/main",async (req,res)=>{
     //find all the task and display it
     const ListOftask = await Task.find({});
@@ -89,7 +85,7 @@ app.delete("/main/:id",async(req,res)=>{
     const {id} = req.params;
     //delete the task
     const DeleteTask = await Task.findByIdAndDelete(id);
-    req.flash("success","successfully deleted the task");
+    await req.flash("success","successfully deleted the task");
     res.redirect("/main");
 })
 
@@ -104,7 +100,7 @@ app.post("/main/edit/:id",async(req,res)=>{
     const {id} = req.params;
     const {task} = req.body;
     const Selectedtask = await Task.findByIdAndUpdate(id,{task:task})
-    req.flash("success","successfully edited task");
+    await req.flash("success","successfully edited task");
     res.redirect("/main");
 })
 
