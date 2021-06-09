@@ -16,7 +16,7 @@ const MongoStore = require('connect-mongo');
 //for the flash messages
 
 const DB_URL = process.env.DB_URL||'mongodb://localhost:27017/ToDoApp';
-
+const secret = process.env.SECRET || "thisismysecret";
 //'mongodb://localhost:27017/ToDoApp'
 //connecting to the mongoose db
 mongoose.connect(DB_URL,
@@ -37,7 +37,7 @@ app.use(methodOverride('_method'));
 
 const store = new MongoStore({
     mongoUrl:DB_URL,
-    secret:"thisisasecret",
+    secret:secret,
     touchAfter:24*3600
 });
 
@@ -49,7 +49,7 @@ store.on("error",function(e){
 const sessionconfig = {
     store,
     name:"session",
-    secret:"todoappsecret",
+    secret:secret,
     resave:false,
     saveUninitialized :true,
     cookie:{
