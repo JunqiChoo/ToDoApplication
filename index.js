@@ -65,6 +65,12 @@ app.use((req,res,next)=>{
     next();
 })
 
+
+
+app.get("/",(req,res)=>{
+    res.redirect("/main")
+})
+
 app.get("/main",async (req,res)=>{
     //find all the task and display it
     const ListOftask = await Task.find({});
