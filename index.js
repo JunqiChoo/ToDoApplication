@@ -1,3 +1,10 @@
+
+if(process.env.NODE_ENV !=="production"){
+    require("dotenv").config();
+}
+
+
+
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -10,15 +17,23 @@ const session = require("express-session");
 const flash = require("connect-flash");
 //for the flash messages
 
+const DB_URL = process.env.DB_URL;
 
+
+
+//'mongodb://localhost:27017/ToDoApp'
 //connecting to the mongoose db
-mongoose.connect('mongodb://localhost:27017/ToDoApp', {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
+mongoose.connect('mongodb://localhost:27017/ToDoApp',
+ {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
 .then(()=>{
     console.log("CONNECTION OPEN!")
 }).catch(err=>{
     console.log("CONNECTION ISSUE")
     console.log(err);
 });
+
+
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
